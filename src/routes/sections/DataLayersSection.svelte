@@ -45,31 +45,31 @@
   export let map: google.maps.Map;
 
   const icon = 'layers';
-  const title = 'Data Layers endpoint';
+  const title = 'Livelli di informazione';
 
   const dataLayerOptions: Record<LayerId | 'none', string> = {
-    none: 'No layer',
-    mask: 'Roof mask',
-    dsm: 'Digital Surface Model',
-    rgb: 'Aerial image',
-    annualFlux: 'Annual sunshine',
-    monthlyFlux: 'Monthly sunshine',
-    hourlyShade: 'Hourly shade',
+    none: 'Nessun livello',
+    mask: 'Maschera del tetto',
+    dsm: 'Modello digitale del terreno',
+    rgb: 'Immagine aerea',
+    annualFlux: 'Soleggiamento annuale',
+    monthlyFlux: 'Soleggiamento mensile',
+    hourlyShade: 'Ombra oraria',
   };
 
   const monthNames = [
-    'Jan',
+    'Gen',
     'Feb',
     'Mar',
     'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
+    'Mag',
+    'Giu',
+    'Lug',
+    'Ago',
+    'Set',
+    'Ott',
     'Nov',
-    'Dec',
+    'Dic',
   ];
 
   let dataLayersResponse: DataLayersResponse | undefined;
@@ -221,8 +221,8 @@
   <Expandable bind:section={expandedSection} {icon} {title} subtitle={dataLayerOptions[layerId]}>
     <div class="flex flex-col space-y-2 px-2">
       <span class="outline-text label-medium">
-        <b>{title}</b> provides raw and processed imagery and granular details on an area surrounding
-        a location.
+        <b>{title}</b> fornisce immagini grezze e elaborate e dettagli granulari su un'area circostante
+        una posizione.
       </span>
 
       <Dropdown
@@ -244,26 +244,26 @@
         {/if}
 
         <span class="outline-text label-medium">
-          {#if imageryQuality == 'HIGH'}
-            <p><b>Low altitude aerial imagery</b> available.</p>
-            <p>Imagery and DSM data were processed at <b>10 cm/pixel</b>.</p>
-          {:else if imageryQuality == 'MEDIUM'}
-            <p><b>AI augmented aerial imagery</b> available.</p>
-            <p>Imagery and DSM data were processed at <b>25 cm/pixel</b>.</p>
-          {:else if imageryQuality == 'LOW'}
-            <p><b>AI augmented aerial or satellite imagery</b> available.</p>
-            <p>Imagery and DSM data were processed at <b>50 cm/pixel</b>.</p>
-          {/if}
+            {#if imageryQuality == 'HIGH'}
+            <p><b>Immagini aeree a bassa quota</b> disponibili.</p>
+            <p>Le immagini e i dati DSM sono stati elaborati a <b>10 cm/pixel</b>.</p>
+            {:else if imageryQuality == 'MEDIUM'}
+            <p><b>Immagini aeree aumentate dall'IA</b> disponibili.</p>
+            <p>Le immagini e i dati DSM sono stati elaborati a <b>25 cm/pixel</b>.</p>
+            {:else if imageryQuality == 'LOW'}
+            <p><b>Immagini aeree o satellitari aumentate dall'IA</b> disponibili.</p>
+            <p>Le immagini e i dati DSM sono stati elaborati a <b>50 cm/pixel</b>.</p>
+            {/if}
         </span>
 
-        <InputBool bind:value={showPanels} label="Solar panels" />
-        <InputBool bind:value={showRoofOnly} label="Roof only" onChange={() => showDataLayer()} />
+        <InputBool bind:value={showPanels} label="Pannelli solari" />
+        <InputBool bind:value={showRoofOnly} label="Solo tetto" onChange={() => showDataLayer()} />
 
         {#if ['monthlyFlux', 'hourlyShade'].includes(layerId)}
-          <InputBool bind:value={playAnimation} label="Play animation" />
+          <InputBool bind:value={playAnimation} label="Riproduci animazione" />
         {/if}
       {/if}
-      <div class="flex flex-row">
+      <div class="flex flex-row hidden">
         <div class="grow" />
         <md-filled-tonal-button role={undefined} on:click={() => apiResponseDialog.show()}>
           API response
@@ -297,32 +297,17 @@
         <div class="flex flex-col space-y-4">
           <p class="outline-text">
             {#if layerId == 'mask'}
-              The building mask image: one bit per pixel saying whether that pixel is considered to
-              be part of a rooftop or not.
+              L'immagine della maschera dell'edificio: un bit per pixel che indica se quel pixel è considerato parte di un tetto o meno.
             {:else if layerId == 'dsm'}
-              An image of the DSM (Digital Surface Model) of the region. Values are in meters above
-              EGM96 geoid (i.e., sea level). Invalid locations (where we don't have data) are stored
-              as -9999.
+              Un'immagine del DSM (Modello Digitale della Superficie) della regione. I valori sono in metri sopra il geoide EGM96 (cioè, il livello del mare). Le posizioni non valide (dove non abbiamo dati) sono memorizzate come -9999.
             {:else if layerId == 'rgb'}
-              An image of RGB data (aerial photo) of the region.
+              Un'immagine dei dati RGB (foto aerea) della regione.
             {:else if layerId == 'annualFlux'}
-              The annual flux map (annual sunlight on roofs) of the region. Values are kWh/kW/year.
-              This is unmasked flux: flux is computed for every location, not just building
-              rooftops. Invalid locations are stored as -9999: locations outside our coverage area
-              will be invalid, and a few locations inside the coverage area, where we were unable to
-              calculate flux, will also be invalid.
+              La mappa del flusso annuale (luce solare annuale sui tetti) della regione. I valori sono kWh/kW/anno. Questo è il flusso non mascherato: il flusso è calcolato per ogni posizione, non solo per i tetti degli edifici. Le posizioni non valide sono memorizzate come -9999: le posizioni al di fuori della nostra area di copertura saranno non valide, e alcune posizioni all'interno dell'area di copertura, dove non siamo stati in grado di calcolare il flusso, saranno anche non valide.
             {:else if layerId == 'monthlyFlux'}
-              The monthly flux map (sunlight on roofs, broken down by month) of the region. Values
-              are kWh/kW/year. The GeoTIFF imagery file pointed to by this URL will contain twelve
-              bands, corresponding to January...December, in order.
+              La mappa del flusso mensile (luce solare sui tetti, suddivisa per mese) della regione. I valori sono kWh/kW/anno. Il file di immagine GeoTIFF indicato da questo URL conterrà dodici bande, corrispondenti a gennaio...dicembre, in ordine.
             {:else if layerId == 'hourlyShade'}
-              Twelve URLs for hourly shade, corresponding to January...December, in order. Each
-              GeoTIFF imagery file will contain 24 bands, corresponding to the 24 hours of the day.
-              Each pixel is a 32 bit integer, corresponding to the (up to) 31 days of that month; a
-              1 bit means that the corresponding location is able to see the sun at that day, of
-              that hour, of that month. Invalid locations are stored as -9999 (since this is
-              negative, it has bit 31 set, and no valid value could have bit 31 set as that would
-              correspond to the 32nd day of the month).
+              Dodici URL per l'ombra oraria, corrispondenti a gennaio...dicembre, in ordine. Ogni file di immagine GeoTIFF conterrà 24 bande, corrispondenti alle 24 ore del giorno. Ogni pixel è un intero a 32 bit, corrispondente ai (fino a) 31 giorni di quel mese; un bit 1 significa che la posizione corrispondente è in grado di vedere il sole in quel giorno, a quell'ora, di quel mese. Le posizioni non valide sono memorizzate come -9999 (poiché questo è negativo, ha il bit 31 impostato, e nessun valore valido potrebbe avere il bit 31 impostato poiché ciò corrisponderebbe al 32° giorno del mese).
             {/if}
           </p>
 

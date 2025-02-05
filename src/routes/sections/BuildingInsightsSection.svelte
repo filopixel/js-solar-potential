@@ -47,7 +47,7 @@
   export let map: google.maps.Map;
 
   const icon = 'home';
-  const title = 'Building Insights endpoint';
+  const title = 'Dati edificio';
 
   let requestSent = false;
   let requestError: RequestError | undefined;
@@ -156,14 +156,14 @@
     bind:section={expandedSection}
     {icon}
     {title}
-    subtitle={`Yearly energy: ${(
+    subtitle={`Energia annuale: ${(
       (panelConfig.yearlyEnergyDcKwh * panelCapacityRatio) /
       1000
     ).toFixed(2)} MWh`}
   >
     <div class="flex flex-col space-y-2 px-2">
       <span class="outline-text label-medium">
-        <b>{title}</b> provides data on the location, dimensions & solar potential of a building.
+        <b>{title}</b> fornisce dati sulla posizione, le dimensioni e il potenziale solare di un edificio.
       </span>
 
       <InputPanelsCount
@@ -173,12 +173,12 @@
       <NumberInput
         bind:value={panelCapacityWatts}
         icon="bolt"
-        label="Panel capacity"
+        label="Capacità pannelli"
         suffix="Watts"
       />
-      <InputBool bind:value={showPanels} label="Solar panels" />
+      <InputBool bind:value={showPanels} label="Pannelli solari" />
 
-      <div class="grid justify-items-end">
+      <div class="grid justify-items-end hidden">
         <md-filled-tonal-button role={undefined} on:click={() => apiResponseDialog.show()}>
           API response
         </md-filled-tonal-button>
@@ -212,25 +212,25 @@
           rows={[
             {
               icon: 'wb_sunny',
-              name: 'Annual sunshine',
+              name: 'Sole annuale',
               value: showNumber(buildingInsights.solarPotential.maxSunshineHoursPerYear),
               units: 'hr',
             },
             {
               icon: 'square_foot',
-              name: 'Roof area',
+              name: 'Area del tetto',
               value: showNumber(buildingInsights.solarPotential.wholeRoofStats.areaMeters2),
               units: 'm²',
             },
             {
               icon: 'solar_power',
-              name: 'Max panel count',
+              name: 'No. max pannelli',
               value: showNumber(buildingInsights.solarPotential.solarPanels.length),
               units: 'panels',
             },
             {
               icon: 'co2',
-              name: 'CO₂ savings',
+              name: 'Risparmio CO₂',
               value: showNumber(buildingInsights.solarPotential.carbonOffsetFactorKgPerMwh),
               units: 'Kg/MWh',
             },
@@ -250,7 +250,7 @@
 
             <Gauge
               icon="energy_savings_leaf"
-              title="Yearly energy"
+              title="Energia annuale"
               label={showNumber((panelConfig?.yearlyEnergyDcKwh ?? 0) * panelCapacityRatio)}
               labelSuffix="KWh"
               max={buildingInsights.solarPotential.solarPanelConfigs.slice(-1)[0]

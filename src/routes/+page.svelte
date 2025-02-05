@@ -27,8 +27,8 @@
 
   const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const defaultPlace = {
-    name: 'Rinconada Library',
-    address: '1213 Newell Rd, Palo Alto, CA 94303',
+    name: 'Sede di On Charge',
+    address: 'Lungotevere Flaminio, 16',
   };
   let location: google.maps.LatLng | undefined;
   const zoom = 19;
@@ -82,28 +82,15 @@
   <!-- Side bar -->
   <aside class="flex-none md:w-96 w-80 p-2 pt-3 overflow-auto">
     <div class="flex flex-col space-y-2 h-full">
+
+      <!-- Logo del sito -->
+      <div class="flex flex-col items-center w-full">
+        <img src="https://cdn.oncharge.it/images/icons/app/logo.png" alt="On Charge" class="h-12 mt-6 mb-4" />
+      </div>
+
       {#if placesLibrary && map}
         <SearchBar bind:location {placesLibrary} {map} initialValue={defaultPlace.name} />
       {/if}
-
-      <div class="p-4 surface-variant outline-text rounded-lg space-y-3">
-        <p>
-          <a
-            class="primary-text"
-            href="https://developers.google.com/maps/documentation/solar/overview?hl=en"
-            target="_blank"
-          >
-            Two distinct endpoints of the <b>Solar API</b>
-            <md-icon class="text-sm">open_in_new</md-icon>
-          </a>
-          offer many benefits to solar marketplace websites, solar installers, and solar SaaS designers.
-        </p>
-
-        <p>
-          <b>Click on an area below</b>
-          to see what type of information the Solar API can provide.
-        </p>
-      </div>
 
       {#if location}
         <Sections {location} {map} {geometryLibrary} {googleMapsApiKey} />
@@ -111,7 +98,7 @@
 
       <div class="grow" />
 
-      <div class="flex flex-col items-center w-full">
+      <div class="flex flex-col items-center w-full hidden">
         <md-text-button
           href="https://github.com/googlemaps-samples/js-solar-potential"
           target="_blank"
@@ -122,7 +109,7 @@
       </div>
 
       <span class="pb-4 text-center outline-text label-small">
-        This is not an officially supported Google product.
+        Adattato da @filopixel.
       </span>
     </div>
   </aside>

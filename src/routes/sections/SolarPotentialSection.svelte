@@ -44,7 +44,7 @@
   export let defaultPanelCapacityWatts: number;
 
   const icon = 'payments';
-  const title = 'Solar Potential analysis';
+  const title = 'Analisi del Potenziale Solare';
 
   let costChart: HTMLElement;
   let showAdvancedSettings = false;
@@ -94,18 +94,18 @@
   let remainingLifetimeUtilityBill: number = yearlyUtilityBillEstimates.reduce((x, y) => x + y, 0);
   let totalCostWithSolar: number =
     installationCostTotal + remainingLifetimeUtilityBill - solarIncentives;
-  console.log(`Cost with solar: $${totalCostWithSolar.toFixed(2)}`);
+  console.log(`Costo con solare: € ${totalCostWithSolar.toFixed(2)}`);
 
   // Cost without solar for installation life span
   let yearlyCostWithoutSolar: number[] = [...Array(installationLifeSpan).keys()].map(
     (year) => (monthlyAverageEnergyBill * 12 * costIncreaseFactor ** year) / discountRate ** year,
   );
   let totalCostWithoutSolar: number = yearlyCostWithoutSolar.reduce((x, y) => x + y, 0);
-  console.log(`Cost without solar: $${totalCostWithoutSolar.toFixed(2)}`);
+  console.log(`Costo senza solare: € ${totalCostWithoutSolar.toFixed(2)}`);
 
   // Savings with solar for installation life span
   let savings: number = totalCostWithoutSolar - totalCostWithSolar;
-  console.log(`Savings: $${savings.toFixed(2)} in ${installationLifeSpan} years`);
+  console.log(`Risparmio: € ${savings.toFixed(2)} in ${installationLifeSpan} anni`);
   // [END solar_potential_calculations]
 
   // Reactive calculations
@@ -204,8 +204,8 @@
   bind:section={expandedSection}
   {icon}
   {title}
-  subtitle="Values are only placeholders."
-  subtitle2="Update with your own values."
+  subtitle="I valori sono solo d'esempio."
+  subtitle2="Aggiornare con i valori reali."
   secondary
 >
   <div class="flex flex-col space-y-4 pt-1">
@@ -213,13 +213,13 @@
       <p class="relative inline-flex items-center space-x-2">
         <md-icon class="md:w-6 w-8">info</md-icon>
         <span>
-          Projections use a
+          Le proiezioni sono basate sul
           <a
             class="primary-text"
             href="https://developers.google.com/maps/documentation/solar/calculate-costs-us"
             target="_blank"
           >
-            USA financial model
+            sistema di calcolo dei costi negli USA
             <md-icon class="text-sm">open_in_new</md-icon>
           </a>
         </span>
@@ -229,7 +229,7 @@
     <InputMoney
       bind:value={monthlyAverageEnergyBillInput}
       icon="credit_card"
-      label="Monthly average energy bill"
+      label="Bolletta media mensile"
       onChange={updateConfig}
     />
 
@@ -245,28 +245,28 @@
     <InputMoney
       bind:value={energyCostPerKwhInput}
       icon="paid"
-      label="Energy cost per kWh"
+      label="Costo energia per kWh"
       onChange={updateConfig}
     />
 
     <InputMoney
       bind:value={solarIncentives}
       icon="redeem"
-      label="Solar incentives"
+      label="Incentivi solari"
       onChange={updateConfig}
     />
 
     <InputMoney
       bind:value={installationCostPerWatt}
       icon="request_quote"
-      label="Installation cost per Watt"
+      label="Costo di installazione per Watt"
       onChange={updateConfig}
     />
 
     <InputNumber
       bind:value={panelCapacityWattsInput}
       icon="bolt"
-      label="Panel capacity"
+      label="Capacità pannello"
       suffix="Watts"
       onChange={updateConfig}
     />
@@ -277,7 +277,7 @@
         role={undefined}
         on:click={() => (showAdvancedSettings = !showAdvancedSettings)}
       >
-        {showAdvancedSettings ? 'Hide' : 'Show'} advanced settings
+        {showAdvancedSettings ? 'Nascondi' : 'Mostra'} impostazioni avanzate
         <md-icon slot="icon">
           {showAdvancedSettings ? 'expand_less' : 'expand_more'}
         </md-icon>
@@ -289,7 +289,7 @@
         <InputNumber
           bind:value={installationLifeSpan}
           icon="date_range"
-          label="Installation lifespan"
+            label="Durata dell'installazione"
           suffix="years"
           onChange={updateConfig}
         />
@@ -297,14 +297,14 @@
         <InputPercent
           bind:value={dcToAcDerateInput}
           icon="dynamic_form"
-          label="DC to AC conversion "
+            label="Conversione da DC a AC"
           onChange={updateConfig}
         />
 
         <InputRatio
           bind:value={efficiencyDepreciationFactor}
           icon="trending_down"
-          label="Panel efficiency decline per year"
+            label="Declino dell'efficienza del pannello per anno"
           decrease
           onChange={updateConfig}
         />
@@ -312,14 +312,14 @@
         <InputRatio
           bind:value={costIncreaseFactor}
           icon="price_change"
-          label="Energy cost increase per year"
+            label="Aumento del costo dell'energia per anno"
           onChange={updateConfig}
         />
 
         <InputRatio
           bind:value={discountRate}
           icon="local_offer"
-          label="Discount rate per year"
+            label="Tasso di sconto per anno"
           onChange={updateConfig}
         />
       </div>
@@ -332,7 +332,7 @@
         href="https://developers.google.com/maps/documentation/solar/calculate-costs-us"
         target="_blank"
       >
-        More details
+        Più dettagli
         <md-icon slot="icon">open_in_new</md-icon>
       </md-filled-tonal-button>
     </div>
@@ -348,7 +348,7 @@
         rows={[
           {
             icon: 'energy_savings_leaf',
-            name: 'Yearly energy',
+            name: 'Energia annuale',
             value: showNumber(
               (solarPanelConfigs[configId]?.yearlyEnergyDcKwh ?? 0) * panelCapacityRatio,
             ),
@@ -356,13 +356,13 @@
           },
           {
             icon: 'speed',
-            name: 'Installation size',
+            name: 'Dimensioni installazione',
             value: showNumber(installationSizeKw),
             units: 'kW',
           },
           {
             icon: 'request_quote',
-            name: 'Installation cost',
+            name: 'Costo installazione',
             value: showMoney(installationCostTotal),
           },
           {
@@ -375,7 +375,7 @@
               'battery_5_bar',
               'battery_full',
             ][Math.floor(Math.min(Math.round(energyCovered * 100) / 100, 1) * 6)],
-            name: 'Energy covered',
+            name: 'Energia coperta',
             value: Math.round(energyCovered * 100).toString(),
             units: '%',
           },
@@ -390,17 +390,17 @@
           rows={[
             {
               icon: 'wallet',
-              name: 'Cost without solar',
+              name: 'Costo senza solare',
               value: showMoney(totalCostWithoutSolar),
             },
             {
               icon: 'wb_sunny',
-              name: 'Cost with solar',
+              name: 'Costo con solare',
               value: showMoney(totalCostWithSolar),
             },
             {
               icon: 'savings',
-              name: 'Savings',
+              name: 'Risparmio',
               value: showMoney(savings),
             },
             {
@@ -410,7 +410,7 @@
                 breakEvenYear >= 0
                   ? `${breakEvenYear + new Date().getFullYear() + 1} in ${breakEvenYear + 1}`
                   : '--',
-              units: 'years',
+              units: 'anni',
             },
           ]}
         />

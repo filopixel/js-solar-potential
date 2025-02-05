@@ -21,10 +21,10 @@ export function showNumber(x: number) {
 }
 
 export function showMoney(amount: number) {
-  return `$${amount.toLocaleString(undefined, {
+  return `${amount.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })}`;
+  })}€`;
 }
 
 export function findSolarConfig(
